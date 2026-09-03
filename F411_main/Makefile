@@ -23,7 +23,7 @@ OPENCM3INC  := $(OPENCM3BASE)/include
 OPENCM3LD   := $(OPENCM3BASE)/lib
 
 # Rebuild INCLUDE: local dir (pins, config, ld), shared root (kernel.h,
-# usb_vcp.h), library
+# usb_vcp.h, protocol.h, ...), library
 INCLUDE := -I. -I.. -I$(OPENCM3INC)
 
 ################################################################################
@@ -34,7 +34,8 @@ INCLUDE := -I. -I.. -I$(OPENCM3INC)
 # line is needed because the link rule in master.mk also recorded its deps at
 # parse time (old OBJ).
 
-SRC  = $(wildcard ./*.c) ../usfmcalc.c ../usb_vcp.c
+SRC  = $(wildcard ./*.c) \
+       ../usfmcalc.c ../usb_vcp.c ../usfm_link.c ../stream.c ../sim.c ../cmd.c
 
 OBJ := $(addprefix $(OBJDIR)/,$(notdir $(SRC:.c=.o)))
 OBJ += $(addprefix $(OBJDIR)/,$(notdir $(ASM:.s=.o)))
@@ -45,6 +46,8 @@ $(BINDIR)/$(PROJECT).elf: $(OBJ)
 
 # startup.c provides reset_handler; skip toolchain crt0/crtbegin entirely
 LDFLAGS += -nostartfiles
+# libm (sinf in the frame simulator); hard-float multilib is picked by FP_FLAGS
+LDFLAGS += -lm
 CFLAGS  += -O2
 
 ################################################################################

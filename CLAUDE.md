@@ -14,9 +14,18 @@ algorithm, frequency output) to a neighbouring STM32 reached over I2C
 `C:\Piezus\TI\usfm\inbox\2026-09-02_lead_task-embedded-algo.md` and
 `..._analyzer_f411-fit.md`.
 
-v0 (2026-09-03) is a skeleton: clocks, tick, LED, and a USB CDC virtual
-COM port that echoes everything back — the bench transport for whatever
-comes next.
+Stage 1 "transit" (fw 0.10, 2026-09-03) is live: STM32 is I2C master to
+the MSP430 (protocol frames over I2C, F104 GET_FRAME on DRDY), frames go
+to the PC as a USB record stream (`inbox/AGREED_usb-stream.md`), the PC
+talks back over the same VCP (addr 2 = calculator registers, addr 1 =
+bridge to the MSP430).  `pc/calctest.ps1` is the reference receiver and
+bench test.  Stage 2 (dtof_emb on board, result into MSP block 3000) is
+next.
+
+Slave quirks (MSP fw 1.60) already handled — do not "simplify" them away:
+2 ms pause between request STOP and reply read (`I2C_REPLY_DELAY_MS`),
+body read expects the length prefix repeated, 400 kHz because at 100 kHz
+the slave overwrites its RAW buffers under a 1 KB read.
 
 ## Layout — same scheme as uslm5lp0v3
 
