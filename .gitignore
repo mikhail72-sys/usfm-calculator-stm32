@@ -1,0 +1,4 @@
+bin/
+obj/
+**/err.txt
+.claude/settings.local.json
