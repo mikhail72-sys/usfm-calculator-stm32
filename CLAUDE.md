@@ -25,7 +25,9 @@ MCU targets sharing one application core:
 
 - root: MCU-neutral code — `usfmcalc.c` (main), `usb_vcp.c/.h` (CDC-ACM
   over libopencm3 usbd), `kernel.h` (the hardware API every target must
-  implement);
+  implement), `protocol.h` — a COPY of the canonical
+  `C:\Piezus\TI\usfm\protocol.h` (owned by device; never hand-edit, re-copy
+  when its USFM_PROTO_VER moves);
 - `F411_main/` — STM32F411CEU6 on a WeAct "black pill": `Makefile`,
   `MY_FLASH.ld`, `startup.c`, `config.h`, `pins_f411.h`, `kernel_f411.c`.
 
